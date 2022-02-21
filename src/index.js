@@ -6,7 +6,7 @@ const dotenv = require("dotenv");
 const path = require("path");
 const cors = require("cors");
 dotenv.config();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 require("./db/db");
 const userRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin/auth")

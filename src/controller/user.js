@@ -30,7 +30,7 @@ exports.signin = async (req, res) => {
                 httpOnly: true
             })
             // console.log(token)
-            if (isMatch && verifyUser.role === "user") {
+            if (isMatch || verifyUser.role === "user") {
                 res.status(200).json({
                     message: "user login success",
                     token,
