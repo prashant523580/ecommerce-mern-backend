@@ -64,7 +64,7 @@ exports.getProductBySlug = async (req, res) => {
         let {
             slug
         } = req.params;
-        console.log(slug)
+        // console.log(slug)
         let currentCategory = await category.findOne({
             slug
         }).select("_id type");
@@ -73,7 +73,7 @@ exports.getProductBySlug = async (req, res) => {
             let currentProducts = await Product.find({
                 category: currentCategory._id
             });
-            console.log(currentProducts)
+            // console.log(currentProducts)
             res.status(200).json({
                 currentProducts,
                 productByPrice: {

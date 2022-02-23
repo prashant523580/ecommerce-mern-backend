@@ -6,6 +6,12 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD
         useUnifiedTopology: true,
         useFindAndModify: false
     })
+    // mongoose.connect('mongodb://localhost:27017/ecommerce',{
+    //     useNewUrlParser: true,
+    //     useCreateIndex:true,
+    //     useUnifiedTopology: true,
+    //     useFindAndModify: false
+    // })
     .then(() => {
         console.log("connected");
     }).catch((err) => {
