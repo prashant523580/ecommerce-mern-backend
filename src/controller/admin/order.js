@@ -27,10 +27,11 @@ exports.getCustomerOrders = async(req,res) => {
    try{
 
        const orders = await Order.find({})
-       .populate("items.productId", "name")
-    //    .populate("addressId")
-            .populate("user")
+       .populate("items.productId", "_id name productPicture")
+       .populate("addressId")
+            // .populate("user.name")
        .exec();
+       console.log(orders)
     //    .lean();
     //    console.log(orders)
        if(orders){

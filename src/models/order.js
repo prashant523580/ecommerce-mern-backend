@@ -6,8 +6,8 @@ const orderSchema = new mongoose.Schema({
         required: true
     },
     addressId: {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: "UserAddress",
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "UserAddress.Address",
         required: true,
         //  autopopulate: true
     },
