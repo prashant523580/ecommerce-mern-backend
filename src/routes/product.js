@@ -27,7 +27,7 @@ let storage = multer.diskStorage({
         cb(null, shortid.generate() + "-" + file.originalname)
     }
 });
-// let source_path = path.dirname (__dirname);
+// let source_path = path.dirname  (__dirname);
 let uploads = multer({
     storage
 });

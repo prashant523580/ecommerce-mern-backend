@@ -45,6 +45,7 @@ exports.getAllProduct = async (req, res) => {
     try {
         let products = await Product.find().populate("category","name");
         let page = await Page.find();
+        // console.log(products,page,"helosal")
         if(products || page){
 
             res.status(200).json({

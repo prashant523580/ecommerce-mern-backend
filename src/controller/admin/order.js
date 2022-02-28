@@ -2,7 +2,7 @@ const Order = require('../../models/order');
 const Address = require("../../models/address")
 exports.updateOrder = async(req,res) => {
         try{
-            console.log(req.body)
+            // console.log(req.body)
             let updatedOrder = await Order.updateOne({
                 _id:req.body.orderId,
                 "orderStatus.type": req.body.type,
@@ -31,7 +31,7 @@ exports.getCustomerOrders = async(req,res) => {
        .populate("addressId")
             // .populate("user.name")
        .exec();
-       console.log(orders)
+    //    console.log(orders)
     //    .lean();
     //    console.log(orders)
        if(orders){

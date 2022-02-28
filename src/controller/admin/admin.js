@@ -31,7 +31,7 @@ exports.signin = async (req, res) => {
                 expires: new Date(Date.now() + 1000),
                 httpOnly: true,
             });
-            if (isMatch || verifyUser.role == "admin") {
+            if (isMatch && verifyUser.role == "admin") {
                 res.status(200).json({
                     message: "admin login success",
                     token,
@@ -87,7 +87,7 @@ exports.signup = async (req, res) => {
                 const token = await user.generateToken();
                 console.log(token)
                 res.cookie("jwt", token, {
-                    expires: new Date(Date.now()),
+                    expires: "1d",
                     httpOnly: true,
                     // sameSite:'lax',
                     secure: true,

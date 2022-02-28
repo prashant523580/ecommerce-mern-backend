@@ -1,56 +1,57 @@
 const User = require("../models/user");
-const bcrypt = require("bcryptjs/dist/bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 // const {
 //     validationResult
 // } = require("express-validator");
 exports.signin = async (req, res) => {
-    
-    const {
-        email_user,
-        password
-    } = req.body;
-    if (!email_user || !password) {
-        return res.status(422).json({
-            error: "fill data"
-        })
-    }
-    let verifyUser = await User.findOne({
-        username: email_user
-    }) || await User.findOne({
-        email: email_user
-    });
-    try {
+    // try {
+        
         // console.log(verifyUser)
-        if (verifyUser) {
+        const {
+            email_user,
+            password
+        } = req.body;
+        if (!email_user || !password) {
+            return res.status(422).json({
+                error: "fill data"
+            })
+        }
+        const verifyUser = await User.findOne({
+            username: email_user
+        }) || await User.findOne({
+            email: email_user
+        });
+        if (!verifyUser) {
+            res.status(400).json({
+                error: "somethings went wrongs"
+            })
+            
+        } else {
+            // console.log(verifyUser.password)
             const isMatch = await bcrypt.compare(password, verifyUser.password);
             const token = await verifyUser.generateToken();
-            res.cookie("jwt", token, {
-                expires: new Date( Date.now() + 1000),
-                httpOnly: true
-            })
-            // console.log(token)
-            if (isMatch || verifyUser.role === "user") {
-                res.status(200).json({
+            if (isMatch && verifyUser.role == "user") {
+                // console.log(isMatch,verifyUser.role)
+                // res.cookie("jwt", token, {
+                //     expires: "1d"
+                // })
+               return res.status(200).json({
                     message: "user login success",
                     token,
                     user: verifyUser
                 })
             } else {
-                res.status(422).json({
+                res.status(400).json({
                     error: "admin login error"
                 });
             }
-        } else {
-            res.status(422).json({
-                error: "somethings went wrongs"
-            })
         }
-    } catch (error) {
-        res.status(422).json({
-            error
-        })
-    }
+    // } catch (error) {
+        // res.status(400).json({
+        //     error : "some thing went worng"
+        // })
+    // }
 }
 
 exports.signup = async (req, res) => {
@@ -89,14 +90,14 @@ exports.signup = async (req, res) => {
             });
             await user.save();
             res.status(201).json({
-                message: "user registered successfully"
+                message: "user registered successfully",
+                user
             })
         }
     } catch (error) {
         res.status(422).json({
             error
         });
-        console.log(error)
     }
 }
 exports.requireSignin = (req, res, next) => {
