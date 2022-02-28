@@ -28,7 +28,7 @@ exports.signin = async (req, res) => {
             const isMatch = await bcrypt.compare(password, verifyUser.password);
             const token = await verifyUser.generateToken();
             res.cookie("jwt", token, {
-                expires: new Date(Date.now() + 1000),
+                expires: "1d",
                 httpOnly: true,
             });
             if (isMatch && verifyUser.role == "admin") {
