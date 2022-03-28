@@ -26,7 +26,7 @@ app.use((req, res, next) => {
     next()
 })
 app.use(cookieParser());
-// app.use(bodyParser());
+app.use(bodyParser());
 app.use(express.json());
 app.use(cors());
 app.use("/public/", express.static(path.join(__dirname, "uploads")));
@@ -40,6 +40,6 @@ app.use("/api/page", PageRoute);
 app.use("/api", addressRoute);
 app.use("/api", orderRoutes);
 app.use("/api",adminOrderRoute);
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, () => {
     console.log(`listening port to ${PORT}`);
 })
