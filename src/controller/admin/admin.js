@@ -32,7 +32,7 @@ exports.signin = async (req, res) => {
                 expiresIn: "1d",
                 httpOnly: true,
             });
-            if (isMatch && verifyUser.role == "admin") {
+            if (isMatch && verifyUser.role === "admin") {
                 res.status(200).json({
                     message: "admin login success",
                     token,

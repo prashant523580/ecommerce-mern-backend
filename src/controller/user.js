@@ -33,9 +33,9 @@ exports.signin = async (req, res) => {
             const token = await verifyUser.generateToken();
             if (isMatch && verifyUser.role == "user") {
                 // console.log(isMatch,verifyUser.role)
-                res.cookie("jwt", token, {
-                    expiresIn: "1d"
-                })
+                // res.cookie("jwt", token, {
+                //     expiresIn: "1d"
+                // })
                return res.status(200).json({
                     message: "user login success",
                     token,
