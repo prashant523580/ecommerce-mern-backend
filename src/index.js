@@ -26,7 +26,7 @@ app.use((req, res, next) => {
     next()
 })
 app.use(cookieParser());
-app.use(bodyParser());
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.json());
 app.use(cors());
 app.use("/public/", express.static(path.join(__dirname, "uploads")));
