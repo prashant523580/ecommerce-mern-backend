@@ -26,9 +26,10 @@ exports.signin = async (req, res) => {
            return res.status(422).json({error:"user not found"});
         }else{
             const isMatch = await bcrypt.compare(password, verifyUser.password);
+            console.log(isMatch)
             const token = await verifyUser.generateToken();
             res.cookie("jwt", token, {
-                expires: "1d",
+                expiresIn: "1d",
                 httpOnly: true,
             });
             if (isMatch && verifyUser.role == "admin") {
@@ -39,14 +40,14 @@ exports.signin = async (req, res) => {
                 })
             } else {
                 res.status(422).json({
-                    error: "admin not found or password not match"
+                    error: "access denied...."
                 });
             }
         }
          
         
     } catch (error) {
-        res.status(422).json({error :"somethings went wrongs",err: error});
+        // res.status(422).json({error :"somethings went wrongs",err: error});
     }
 }
 
