@@ -29,8 +29,10 @@ exports.signin = async (req, res) => {
             console.log(isMatch)
             const token = await verifyUser.generateToken();
             res.cookie("jwt", token, {
-                expiresIn: "1d",
                 httpOnly: true,
+                expires:"1d",
+                secure: true,
+                httpOnly: true
             });
             if (isMatch && verifyUser.role === "admin") {
                 res.status(200).json({
@@ -86,14 +88,7 @@ exports.signup = async (req, res) => {
             if(user){
 
                 const token = await user.generateToken();
-                console.log(token)
-                res.cookie("jwt", token, {
-                    expires: "1d",
-                    httpOnly: true,
-                    // sameSite:'lax',
-                    secure: true,
-                    // signed : true
-                });
+            
                 await user.save();
                 res.status(201).json({
                     message: "admin registered successfully",

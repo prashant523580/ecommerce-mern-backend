@@ -5,8 +5,9 @@ const app = express();
 const dotenv = require("dotenv");
 const path = require("path");
 const cors = require("cors");
+const helmet = require("helmet");
 dotenv.config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4545;
 require("./db/db");
 const userRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin/auth")
@@ -25,10 +26,11 @@ app.use((req, res, next) => {
         "X-Requested-With", "Content-Type", "Accept")
     next()
 })
+app.use(cors());
+app.use(helmet());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.json());
-app.use(cors());
 app.use("/public/", express.static(path.join(__dirname, "uploads")));
 app.use("/api", userRoutes);
 app.use('/api/admin', adminRoutes);
@@ -40,6 +42,6 @@ app.use("/api/page", PageRoute);
 app.use("/api", addressRoute);
 app.use("/api", orderRoutes);
 app.use("/api",adminOrderRoute);
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0",() => {
     console.log(`listening port to ${PORT}`);
 })

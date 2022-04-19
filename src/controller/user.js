@@ -1,6 +1,8 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const {OAuth2Client} = require("google-auth-library");
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_AUTH_ID);
 // const {
 //     validationResult
 // } = require("express-validator");
@@ -33,9 +35,11 @@ exports.signin = async (req, res) => {
             const token = await verifyUser.generateToken();
             if (isMatch && verifyUser.role == "user") {
                 // console.log(isMatch,verifyUser.role)
-                // res.cookie("jwt", token, {
-                //     expiresIn: "1d"
-                // })
+                res.cookie("jwt", token, {
+                    expires: "120000000",
+                    secure: true,
+                    httpOnly:true
+                })
                return res.status(200).json({
                     message: "user login success",
                     token,
@@ -88,6 +92,7 @@ exports.signup = async (req, res) => {
                 password,
                 role: "user"
             });
+            const token  = await user.generateToken();
             await user.save();
             res.status(201).json({
                 message: "user registered successfully",
@@ -106,4 +111,41 @@ exports.requireSignin = (req, res, next) => {
 
     req.user = user;
     next();
+}
+
+exports.googleLogin = async (req,res) => {
+    const {tokenId} = req.body;
+     let ticket = await client.verifyIdToken(
+         {
+             idToken : tokenId,
+              audience:process.env.GOOGLE_CLIENT_AUTH_ID
+         }
+            )
+    
+    const {name ,email,picture,email_verified} = ticket.getPayload();
+    if(email_verified){
+        let existUser = await User.findOne({email});
+        if(existUser){
+            const token = await existUser.generateToken();
+            const {_id,name,email,role} = existUser;
+            res.status(200).json({
+                user: existUser,token
+            })
+            console.log(token);
+        }else{
+            let password = email+process.env.SECRET_KEY
+            const googleUser = await new User({
+                name ,email ,password ,role:"user"
+            });
+            const token = await googleUser.generateToken();
+            await googleUser.save();
+                res.status(201).json({
+                    user : googleUser,
+                    token
+                });
+
+        }
+        // console.log(existUser)
+    }
+    // console.log(ticket)
 }
