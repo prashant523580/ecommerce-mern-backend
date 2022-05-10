@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 // const { validateRequest } = require("../../validators/validator");
 exports.signin = async (req, res) => {
-    
     const {
         email_user,
         password
@@ -28,12 +27,13 @@ exports.signin = async (req, res) => {
             const isMatch = await bcrypt.compare(password, verifyUser.password);
             console.log(isMatch)
             const token = await verifyUser.generateToken();
-            res.cookie("jwt", token, {
-                httpOnly: true,
-                expires:"1d",
-                secure: true,
-                httpOnly: true
-            });
+            // res.cookie("jwt", token, {
+            //     httpOnly: true,
+            //     expires:"1d",
+            //     secure: true,
+            //     httpOnly: true
+            // });
+            console.log(token)
             if (isMatch && verifyUser.role === "admin") {
                 res.status(200).json({
                     message: "admin login success",
@@ -106,6 +106,7 @@ exports.signup = async (req, res) => {
 exports.signout = (req,res) => {
         res.clearCookie("token");
         res.clearCookie("jwt");
+       
         res.status(200).json({
             message:"sign out successfully"
         })

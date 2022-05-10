@@ -35,11 +35,11 @@ exports.signin = async (req, res) => {
             const token = await verifyUser.generateToken();
             if (isMatch && verifyUser.role == "user") {
                 // console.log(isMatch,verifyUser.role)
-                res.cookie("jwt", token, {
-                    expires: "120000000",
-                    secure: true,
-                    httpOnly:true
-                })
+                // res.cookie("jwt", token, {
+                //     expires: "120000000",
+                //     secure: true,
+                //     httpOnly:true
+                // })
                return res.status(200).json({
                     message: "user login success",
                     token,
@@ -96,7 +96,7 @@ exports.signup = async (req, res) => {
             await user.save();
             res.status(201).json({
                 message: "user registered successfully",
-                user
+                user,token
             })
         }
     } catch (error) {
