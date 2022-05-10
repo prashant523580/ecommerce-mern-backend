@@ -5,7 +5,6 @@ const app = express();
 const dotenv = require("dotenv");
 const path = require("path");
 const cors = require("cors");
-const helmet = require("helmet");
 dotenv.config();
 const PORT = process.env.PORT|| 5000;
 require("./db/db");
