@@ -5,7 +5,6 @@ const app = express();
 const dotenv = require("dotenv");
 const path = require("path");
 const cors = require("cors");
-const helmet = require("helmet");
 dotenv.config();
 const PORT = process.env.PORT|| 5000;
 require("./db/db");
@@ -20,12 +19,12 @@ const addressRoute = require("./routes/address");
 const orderRoutes = require("./routes/order");
 const adminOrderRoute = require("./routes/admin/admin.order");
 app.use((req, res, next) => {
-    res.header("Cross-Origin-Resource-Policy", "Same-Origin")
     res.header("Access-Control-Allow-Origin", "*")
-
+    
     res.header("Access-Control-Allow-Methods", "GET, POST, HEAD,OPTIONS, PUT, PATCH, DELETE")
     res.header("Access-Control-Allow-Headers", "Origin",
-        "X-Requested-With", "Content-Type", "Accept")
+    "X-Requested-With", "Content-Type", "Accept")
+    res.header("Cross-Origin-Resource-Policy", "Same-Origin")
     next()
 })
 app.use(cors());
