@@ -4,7 +4,7 @@ exports.addItemToCart = async (req, res) => {
         const existCart = await Cart.findOne({
             user: req.user._id
         });
-        console.log(req.body)
+
         if (existCart) {
             req.body.cartItems.forEach((cartItem) => {
                     console.log(cartItem)
