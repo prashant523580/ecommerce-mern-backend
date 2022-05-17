@@ -147,5 +147,5 @@ exports.googleLogin = async (req,res) => {
         }
         // console.log(existUser)
     }
-    // console.log(ticket)
+   
 }
